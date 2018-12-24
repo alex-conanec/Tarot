@@ -230,30 +230,27 @@ shinyServer(function(input, output) {
         }
       }
       
-      output$scores <- renderTable({
-        scores
+      output$scores <- DT::renderDataTable({
+        DT::datatable(scores,
+                      extensions = 'Scroller',
+                      options = list(deferRender = F, dom = 't',
+                                     columnDefs = list(list(className = 'dt-center',
+                                                            targets = 5)),
+                                     scrollY = 300, scroller = TRUE, scrollX = T))
       })
       
-      ids <- c("personnage_appele", 
-               "couleur", "contrat", "bouts", "point", "annonces")
-      for (id in ids){
-        shinyjs::reset(id)
-      }
+      shinyjs::reset('main-panel')
       
       write.csv2(scores, file='scores.csv', sep="\t", row.names = FALSE)
     })
     
-    output$scores <- renderTable({
-      scores
+    output$scores <- DT::renderDataTable({
+      DT::datatable(scores,
+                    extensions = 'Scroller',
+                    options = list(deferRender = F, dom = 't',
+                                          columnDefs = list(list(className = 'dt-center',
+                                                                 targets = 5)),
+                                          scrollY = 300, scroller = TRUE, scrollX = T))
     })
     
 })
-
-
-# ac=c('a', 'b', 'c', 'd', 'e')
-# tot=c('a', 'b', 'c', 'd', 'e', 'f','g')
-# names=('b')
-# 
-# which(tot != names & 
-#         tot %in% ac)
-

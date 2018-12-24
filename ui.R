@@ -3,17 +3,24 @@ require(shiny)
 scores <- read.csv("scores.csv", sep = ';', stringsAsFactors=FALSE, dec=',')
 players <- colnames(scores)[11:ncol(scores)]
 
-shinyUI(fluidPage(
+shinyUI(fluidPage(theme = "bootstrap.css",
+  HTML('<head>
+        <meta charset="utf-8" />
+        <title>Tarot</title>
+        </head>
+      
+        <div id="entete">
+        <h1 id="main_title">Compteur de points de Tarot</h1>
+        </div>'),
   tabsetPanel(
     tabPanel("Manche",
-             
              sidebarLayout(
-               sidebarPanel(
-                 wellPanel(checkboxGroupInput(inputId="active_players", 
-                                                         label='Joueurs actifs',
-                                                         choices=players))),
+               sidebarPanel(checkboxGroupInput(inputId="active_players", 
+                                               label='Joueurs actifs',
+                                               choices=players)),
                mainPanel(
-                 wellPanel(
+                 wellPanel(shinyjs::useShinyjs(),
+                           id = "main-panel",
                    fluidRow(column(width = 6, uiOutput("preneur")),
                             column(width = 6, uiOutput("appele"))),
                    
@@ -66,9 +73,19 @@ shinyUI(fluidPage(
     ),
     tabPanel("Scores",
              titlePanel("Scores"),
-             tableOutput(outputId="scores")
+             wellPanel(div(style = 'overflow-x: scroll', 
+                           DT::dataTableOutput('scores'))
+             )
     )
-  )
+  ),
+  HTML('<hr>
+          <footer>
+            <div id="social_network">
+              <p>
+                <a href="https://github.com/alex-conanec"><img src="github_logo.png" alt="logo_network" id="logo_github"/></a>
+                <a href="https://www.linkedin.com/in/alexandre-conanec"><img src="in.png" alt="logo_network" id="logo_linkedin"/></a>
+              </p>
+            </div>')
 ))
 
 

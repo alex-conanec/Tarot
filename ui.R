@@ -1,6 +1,6 @@
 require(shiny)
 
-scores <- read.csv("scores.csv", sep = ';', stringsAsFactors=FALSE, dec=',')
+scores <- read.csv("www/scores.csv", sep = ';', stringsAsFactors=FALSE, dec=',')
 players <- colnames(scores)[11:ncol(scores)]
 
 shinyUI(fluidPage(theme = "bootstrap.css",
@@ -75,10 +75,25 @@ shinyUI(fluidPage(theme = "bootstrap.css",
              titlePanel("Scores"),
              wellPanel(div(style = 'overflow-x: scroll', 
                            DT::dataTableOutput('scores'))
-             )
-    )
-  ),
-  HTML('<hr>
+                       )
+             ),
+      tabPanel("Stats",
+               titlePanel("Stats"),
+               sidebarLayout(
+                 sidebarPanel(radioButtons(inputId="choice_graph",
+                                           label="Choix graphique",
+                                           choices=c('Total',
+                                                     'Stats individuelle',
+                                                     'Stats collectives'),
+                                           selected='Total'),
+                              uiOutput("perf_perso_players")),
+                 mainPanel(wellPanel(shinyjs::useShinyjs(),
+                                     id = "main-panel2",
+                                     uiOutput("graph_principal")))
+                 )
+               )
+    ),
+    HTML('<hr>
           <footer>
             <div id="social_network">
               <p>

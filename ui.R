@@ -1,11 +1,3 @@
-require(shiny)
-require(shinyBS)
-
-
-scores <- read.csv("www/scores.csv", sep = ';', stringsAsFactors=FALSE, dec=',')
-players_names_col <- seq(from=which(colnames(scores)=='Annonces') + 1, to= ncol(scores))
-players <- colnames(scores)[players_names_col]
-
 shinyUI(fluidPage(theme = "bootstrap.css",
   HTML('<head>
         <meta charset="utf-8" />
@@ -17,79 +9,11 @@ shinyUI(fluidPage(theme = "bootstrap.css",
         </div>'),
   tabsetPanel(
     tabPanel("Manche",
-             sidebarLayout(
-               sidebarPanel(checkboxGroupInput(inputId="active_players",
-                                               label='Joueurs actifs',
-                                               choices=players)),
-               mainPanel(
-                 wellPanel(shinyjs::useShinyjs(),
-                           id = "main-panel",
-                   fluidRow(column(width = 6, uiOutput("preneur")),
-                            column(width = 6, uiOutput("appele"))),
-
-                   fluidRow(column(width = 6,
-                                   radioButtons(inputId="personnage_appele",
-                                                label='Personnage appelé',
-                                                choices=c('Roi', 'Dame',
-                                                          'Cavalier', 'Valet'),
-                                                selected = 'Roi')),
-
-                            column(width = 6,
-                                   radioButtons(inputId = "couleur",
-                                                label = "Couleur",
-                                                choices=c('Coeur', 'Carreau',
-                                                          'Trèfle', 'Pique')))),
-
-                   fluidRow(column(width = 6,
-                                   selectizeInput(inputId = "contrat",
-                                                  label = "Contrat",
-                                                  choices=c('Petite', 'Garde',
-                                                            'Garde Sans', 'Garde Contre'))
-                   ),
-                   column(width = 6,
-                          checkboxGroupInput(inputId="annonces",
-                                             label='Annonces',
-                                             choices=c('Poignée', 'Double poignée',
-                                                       'Triple poignée', 'Misère',
-                                                       'Double Misère', 'Petit au bout')))),
-
-                   fluidRow(column(width = 6,
-                                   numericInput(inputId='bouts', 'Bouts',
-                                                value=NULL,
-                                                min=0, max=3, step=1)),
-                            column(width = 6, uiOutput('players_annonce'))),
-
-                   fluidRow(column(width = 6,
-                                   numericInput(inputId='point', 'Points',
-                                                value=NULL,
-                                                min=0, max=94, step=0.5)))
-                 ),
-
-                 fluidRow(column(width = 12, offset= 5, bsButton(inputId = "valid",
-                                                         label = "Valider", disabled = TRUE))
-                          )
-
-               )
-             )
+             useShinyjs(debug = TRUE),
+             formUI('main_form', players)
     ),
     tabPanel("Scores",
-             titlePanel("Scores"),
-             wellPanel(fluidRow(column(width = 10,
-                                       div(style = 'overflow-x: scroll',
-                                           DT::dataTableOutput('scores'))),
-                                column(width = 2,
-                                       verticalLayout( 
-                                         bsButton(inputId = "delete", 
-                                                      label = "Supprimer",
-                                                      disabled = TRUE),
-                                         bsButton(inputId = "modify", 
-                                                  label = "Modifier", 
-                                                  disabled = TRUE)
-                                         )
-                                       )
-                                )
-                       
-                       )
+             scoresDisplayUI('scores')
              ),
       tabPanel("Stats",
                titlePanel("Stats"),

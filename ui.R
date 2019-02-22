@@ -16,19 +16,20 @@ shinyUI(fluidPage(theme = "bootstrap.css",
              scoresDisplayUI('scores')
              ),
       tabPanel("Stats",
-               titlePanel("Stats"),
-               sidebarLayout(
-                 sidebarPanel(radioButtons(inputId="choice_graph",
-                                           label="Choix graphique",
-                                           choices=c('Total',
-                                                     'Stats individuelle',
-                                                     'Stats collectives'),
-                                           selected='Total'),
-                              uiOutput("perf_perso_players")),
-                 mainPanel(wellPanel(shinyjs::useShinyjs(),
-                                     id = "main-panel2",
-                                     uiOutput("graph_principal")))
-                 )
+               statsUI('stats')
+               # titlePanel("Stats"),
+               # sidebarLayout(
+               #   sidebarPanel(radioButtons(inputId="choice_graph",
+               #                             label="Choix graphique",
+               #                             choices=c('Total',
+               #                                       'Stats individuelle',
+               #                                       'Stats collectives'),
+               #                             selected='Total'),
+               #                uiOutput("perf_perso_players")),
+               #   mainPanel(wellPanel(shinyjs::useShinyjs(),
+               #                       id = "main-panel2",
+               #                       uiOutput("graph_principal")))
+               #   )
                )
     ),
     HTML('<hr>

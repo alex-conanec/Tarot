@@ -93,7 +93,6 @@ form <- function(input, output, session, preneur=NULL, appele=NULL,
                                      choices=input$active_players,
                                      selected=annonce_players[[annonce]]))
         }else{
-          print(petit_au_bout_sens)
           tagList(radioButtons(inputId=ns("petit_au_bout_succes"),
                                label='Petit au bout',
                                choiceNames=list('Réussi', 'Perdu'),

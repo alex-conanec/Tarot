@@ -15,7 +15,8 @@ scoresDisplayUI <- function(id) {
                                        disabled = TRUE),
                               actionButton(inputId = ns("modify"), 
                                        label = "Modifier", 
-                                       disabled = TRUE)
+                                       disabled = TRUE),
+                              downloadLink(ns('downloadData'), 'Télécharger')
                               )
                             )
                      )
@@ -57,7 +58,8 @@ scoresDisplay <- function(input, output, session, scores){
   observeEvent(input$confirmDelete,{
     scores_tab <- scores()
     row_to_del <- sort(1:nrow(scores()), decreasing = TRUE)[input$scores_df_rows_selected]
-    delta <- scores_tab[row_to_del, players_names_col]
+    delta <- scores_tab[row_to_del, players_names_col] -
+      scores_tab[row_to_del - 1, players_names_col]
     scores_tab <- scores_tab[-row_to_del,]
     rownames(scores_tab)[as.numeric(rownames(scores_tab))>row_to_del] <-
       as.numeric(rownames(scores_tab)[as.numeric(rownames(scores_tab))>row_to_del]) - 1
@@ -71,8 +73,9 @@ scoresDisplay <- function(input, output, session, scores){
     callModule(scoresDisplay, 'scores', scores)
 
     #save the new scores
-    write.csv2(scores(), file='www/scores.csv', sep="\t", row.names = FALSE)
-
+    # write.csv2(scores(), file='www/scores.csv', sep="\t", row.names = FALSE)
+    saveRDS(scores, file = "www/scores.RDS")
+    
     #close modal dialog
     removeModal()
   })
@@ -185,4 +188,18 @@ scoresDisplay <- function(input, output, session, scores){
                new=FALSE, row=row_selected())
     
   })
+  
+  #     write.csv2(scores, con, sep="\t", row.names = FALSE)
+  
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste("data-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      scores_tab <- readRDS("www/scores.RDS")
+      write.csv2(scores(), file, row.names = FALSE)
+    }
+  )
+  
+  
 }

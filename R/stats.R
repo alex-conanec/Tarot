@@ -65,33 +65,51 @@ makeGraphs <- function(input, output, session, scores){
     ylim=c(min(tab_scores[players_names_col]),
            max(tab_scores[players_names_col]))
     xlim = c(0, nrow(tab_scores))
-
+    
+    month <- stringr::str_extract(month.name, "^.{3}")
+    date <- as.Date(
+      paste(
+        #jour
+        stringr::str_extract(tab_scores$Date, "[0-9]{2}"),
+        
+        #mois
+        stringr::str_pad(sapply(stringr::str_extract(tab_scores$Date, paste(month, collapse = '|')),
+                                function(x){
+                                  which(x==month)
+                                }), 2, pad = "0"),
+        
+        #annee
+        stringr::str_extract(tab_scores$Date, "[0-9]{4}"),
+        
+        sep = '/'),
+      format = "%d/%m/%Y"
+    )
+    
     plot(x=1:nrow(tab_scores), y=tab_scores[,players_names_col[1]],
          col=colors[1],
          type = 'l', lwd = 2,
          ylim=ylim, xlim = xlim,
-         xlab='Parties', ylab='Scores')
+         xaxt = 'n',
+         xlab='Date', ylab='Scores')
+    
+    max_date=10
+    text(x=seq(from = 1, to = nrow(tab_scores), length.out = max_date),
+         y=min - 0.1*(ylim[2]-ylim[1]),
+         srt = 60,
+         par("usr")[3],
+         pos = 1,
+         cex = 1,
+         xpd = T,
+         labels=format(seq.Date(min(date), max(date), 
+                                length.out = max_date),
+                       "%d/%m/%y")
+         )
+    
     for (j in players_names_col){
       lines(x=1:nrow(tab_scores), y=tab_scores[,j],
             col=colors[j-players_names_col[1] + 1],
             type = 'l', lwd = 2)
     }
-
-    
-    # plot(x=tab_scores[,1], y=tab_scores[,players_names_col[1]],
-    #      col=colors[1],
-    #      type = 'l', lwd = 2,
-    #      ylim=ylim, 
-    #      # xlim = xlim,
-    #      # xlab='Parties',
-    #      ylab='Scores')
-    # 
-    # 
-    # for (j in players_names_col){
-    #   lines(x=tab_scores[,1], y=tab_scores[,j],
-    #         col=colors[j-players_names_col[1] + 1],
-    #         type = 'l', lwd = 2)
-    # }
 
     legend(x=-13,
            y=ylim[2] + (ylim[2]-ylim[1])*0.065,
@@ -115,7 +133,6 @@ makeGraphs <- function(input, output, session, scores){
                        'Petite', 'Petite Reussi (en %)', 'Garde', 'Garde Reussi (en %)',
                        'Garde S', 'Garde S Reussi (en %)', 'Garde C', 'Garde C Reussi (en %)')
     rownames(res) <- c('Preneur', 'Appele','Défense', 'Total')
-    
     
     pres <- presence(tab_scores[,players_names_col])
     name <- input$perf_perso_players
@@ -253,16 +270,13 @@ makeGraphs <- function(input, output, session, scores){
   output$graph_perso <- renderPlot({
 
     tab_scores <- scores()
+    pres <- presence(tab_scores[,players_names_col])[, input$perf_perso_players]
+    scores_ind <- tab_scores[pres, input$perf_perso_players]
+    
     par(bg="#D9F0A3")
-    player_j <- colnames(tab_scores)==input$perf_perso_players
-    ylim=c(min(tab_scores[,player_j]),
-           max(tab_scores[,player_j]))
-    xlim = c(0, nrow(tab_scores))
-
-    plot(x=1:nrow(tab_scores), y=tab_scores[,player_j],
+    plot(x=1:length(scores_ind), y=scores_ind,
          col='red',
          type = 'l', lwd = 2,
-         ylim=ylim, xlim = xlim,
          xlab='Parties', ylab='Scores')
 
   })

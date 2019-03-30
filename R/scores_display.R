@@ -35,10 +35,15 @@ scoresDisplay <- function(input, output, session, scores){
                   editable = FALSE, selection = 'single')      
   })
   
-  shinyjs::onclick('scores_df',{
-    toggleState("modify", condition = (!is.null(input$scores_df_rows_selected)))
+  # shinyjs::onclick('scores_df',{
+  #   toggleState("modify", condition = (!is.null(input$scores_df_rows_selected)))
+  #   toggleState("delete", condition = (!is.null(input$scores_df_rows_selected)))
+  # })
+  
+  observe({
+    # toggleState("modify", condition = (!is.null(input$scores_df_rows_selected)))
     toggleState("delete", condition = (!is.null(input$scores_df_rows_selected)))
-  })
+    })
   
   observeEvent(input$delete,{
     showModal(
@@ -74,14 +79,16 @@ scoresDisplay <- function(input, output, session, scores){
 
     #save the new scores
     # write.csv2(scores(), file='www/scores.csv', sep="\t", row.names = FALSE)
-    saveRDS(scores, file = "www/scores.RDS")
+    # saveRDS(scores(), file = "www/scores.RDS")
+    drop_save_rds(scores(), "www/scores.RDS", output_dir = output_dir)
     
     #close modal dialog
     removeModal()
   })
   
   observeEvent(input$modify,{
-    
+    print('modify')
+    print(paste('select', input$scores_df_rows_selected))
     annonces_targets <- c('poignee'='-poignee', 'double_poignee'='double_poignee',
                           'triple_poignee'='triple_poignee', 
                           'misere'='-misere','double_misere'='double_misere')
@@ -96,8 +103,8 @@ scoresDisplay <- function(input, output, session, scores){
       )]
     )
     
-    couleur=reactive(scores()[row_selected(), 'Couleur'])
-    contrat=reactive(scores()[row_selected(),'Contrat'])
+    couleur <- reactive(scores()[row_selected(), 'Couleur'])
+    contrat <- reactive(scores()[row_selected(),'Contrat'])
 
     annonces <- reactive({
       x <- scores()[row_selected(),'Annonces']
@@ -115,10 +122,10 @@ scoresDisplay <- function(input, output, session, scores){
       
     })
     
-    bouts=reactive(scores()[row_selected(), 'Bouts'])
-    points=reactive(scores()[row_selected(), 'Points'])
-    preneur=reactive(scores()[row_selected(), 'Preneur'])
-    appele=reactive(scores()[row_selected(), 'Appele'])
+    bouts <- reactive(scores()[row_selected(), 'Bouts'])
+    points <- reactive(scores()[row_selected(), 'Points'])
+    preneur <- reactive(scores()[row_selected(), 'Preneur'])
+    appele <- reactive(scores()[row_selected(), 'Appele'])
     
     annonce_players <- reactive({
       
@@ -146,7 +153,7 @@ scoresDisplay <- function(input, output, session, scores){
     })
 
     petit_au_bout_succes <- reactive({
-      if (! is.na(scores()[row_selected(), 'Petit'])){
+      if (scores()[row_selected(), 'Petit'] != ''){
         petit_au_bout_succes <- unlist(strsplit(
           scores()[row_selected(), 'Petit'], ';'))[1]
       }else{
@@ -155,14 +162,13 @@ scoresDisplay <- function(input, output, session, scores){
     })
     
     petit_au_bout_sens <- reactive({
-      if (! is.na(scores()[row_selected(), 'Petit'])){
+      if (scores()[row_selected(), 'Petit'] != ''){
         petit_au_bout_sens <- unlist(strsplit(
           scores()[row_selected(), 'Petit'], ';'))[2]
       }else{
         petit_au_bout_succes <- NULL
       }
     })
-    
     
     showModal(
       modalDialog(
@@ -184,12 +190,11 @@ scoresDisplay <- function(input, output, session, scores){
                petit_au_bout_sens=petit_au_bout_sens())
     
     callModule(validForm, 'modify_form', disabled_button=FALSE) 
+    # print(row_selected())
     callModule(scoresCalculation, 'modify_form', scores=scores, 
                new=FALSE, row=row_selected())
     
   })
-  
-  #     write.csv2(scores, con, sep="\t", row.names = FALSE)
   
   output$downloadData <- downloadHandler(
     filename = function() {

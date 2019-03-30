@@ -94,17 +94,17 @@ makeGraphs <- function(input, output, session, scores){
     
     max_date=10
     text(x=seq(from = 1, to = nrow(tab_scores), length.out = max_date),
-         y=min - 0.1*(ylim[2]-ylim[1]),
+         y=ylim[1] - 0.1*(ylim[2]-ylim[1]),
          srt = 60,
          par("usr")[3],
          pos = 1,
          cex = 1,
          xpd = T,
-         labels=format(seq.Date(min(date), max(date), 
+         labels=format(seq.Date(min(date), max(date),
                                 length.out = max_date),
                        "%d/%m/%y")
          )
-    
+  
     for (j in players_names_col){
       lines(x=1:nrow(tab_scores), y=tab_scores[,j],
             col=colors[j-players_names_col[1] + 1],

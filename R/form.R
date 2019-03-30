@@ -123,7 +123,7 @@ validForm <- function(input, output, session, disabled_button=TRUE) {
     }
   })
   
-  observe({
+  observe(
     toggleState("valid", condition = (
       (length(input$active_players) == 5) &
         (!is.na(input$bouts)) &
@@ -134,6 +134,6 @@ validForm <- function(input, output, session, disabled_button=TRUE) {
         input$bouts %in% 0:3
       )
     )
-  })
+  )
   
 }

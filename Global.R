@@ -3,7 +3,7 @@ require(shinyjs)
 require(shinyBS)
 require(rdrop2)
 
-token <- readRDS("droptoken.rds")
+token <- readRDS("www/droptoken.rds")
 drop_acc(dtoken = token)
 output_dir <- "Tarot"
 
@@ -23,5 +23,3 @@ players_names_col <- seq(from=which(colnames(scores)=='Annonces') + 1,
                          to= ncol(scores))
 
 players <- colnames(scores)[players_names_col]
-# scores <- read.csv('www/scores.csv', sep=';', dec=',')
-# saveRDS(scores, "www/scores.RDS")

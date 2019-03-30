@@ -1,15 +1,20 @@
 scoresCalculation <- function(input, output, session, scores, new=TRUE, row){
   observeEvent(input$valid, {
+    
+    scores_tab <- scores()
+    
     if (new){
-      row <- nrow(scores())+1
+      row <- nrow(scores_tab)+1
       shinyjs::reset('main-panel')
+      scores_tab[row,]$Date <- date()
       
     }else{
       removeModal()
-      prev_scores <- scores()[row, players_names_col]
+      prev_scores <- scores_tab[row, players_names_col]
     }
-    scores_tab <- scores()
-    scores_tab[row,]$Date <- date()
+    
+    print(paste('calculation :', row))
+    
     scores_tab[row,]$Preneur <- input$preneur
     scores_tab[row,]$Contrat <- input$contrat
     scores_tab[row,]$Couleur <- input$couleur
@@ -46,7 +51,7 @@ scoresCalculation <- function(input, output, session, scores, new=TRUE, row){
        }else{
          scores_tab[row,]$Petit <- ''
        }
-    
+
     #Annonce registration ----
     if(!is.null(input$annonces)){
       res <- ''
@@ -64,13 +69,12 @@ scoresCalculation <- function(input, output, session, scores, new=TRUE, row){
 
     #Score treatement without annonces ----
     if (row==1){
-      scores_tab[row,players_names_col] <- 0
+      scores_tab[row, players_names_col] <- 0
     }else{
-      scores_tab[row,players_names_col] <- scores_tab[row - 1, players_names_col]
+      scores_tab[row, players_names_col] <- scores_tab[row - 1, players_names_col]
     }
 
     if (input$preneur != input$appele){
-
       scores_tab[row, input$preneur] <-
         scores_tab[row, input$preneur] +
         scores_tab[row,]$Marque * 2
@@ -86,9 +90,9 @@ scoresCalculation <- function(input, output, session, scores, new=TRUE, row){
                             colnames(scores_tab) != input$preneur &
                             colnames(scores_tab) %in% input$active_players)] -
         scores_tab[row,]$Marque
-
+      # print('ok')
     }else{
-
+     
       scores_tab[row, input$preneur] <-
         scores_tab[row, input$preneur] +
         scores_tab[row,]$Marque * 4
@@ -129,8 +133,12 @@ scoresCalculation <- function(input, output, session, scores, new=TRUE, row){
     callModule(scoresDisplay, 'scores', scores)
     
     #save the new scores
-    write.csv2(scores(), file='www/scores.csv', sep="\t", row.names = FALSE)
-  }, ignoreInit = T)
+    # write.csv2(scores(), file='www/scores.csv', sep="\t", row.names = FALSE)
+    # saveRDS(scores(), file = "www/scores.RDS")
+    drop_save_rds(scores(), "www/scores.RDS", output_dir = output_dir)
+    }, 
+    ignoreInit = T)
+  
 }
 
 succes_poignee <- function(name, preneur, appele, ecart){

@@ -32,7 +32,16 @@ stats <- function(input, output, session){
                   DT::dataTableOutput(ns('perf_perso')))) 
       
     }else if (input$choice_graph=='Stats collectives'){
-      plotOutput(ns("perf_collective"))
+      # plotOutput(ns("perf_collective"))
+      tagList(
+        fluidRow(column(width = 6, plotOutput(ns("pres"))),
+                 column(width = 6, plotOutput(ns("contract")))
+        ),
+        fluidRow(column(width = 6, plotOutput(ns("king"))),
+                 column(width = 6, plotOutput(ns("success")))
+        )
+      )
+      
     }
     
   })
@@ -283,39 +292,49 @@ makeGraphs <- function(input, output, session, scores){
 
 
   #Main group stats ----
-  output$perf_collective <- renderPlot({
-
-    tab_scores <- scores()
-    par(mfrow=c(2,2), bg="#D9F0A3")
+  output$pres <- renderPlot({
 
     #presence
-    pres <- presence(tab_scores[,players_names_col])
+    pres <- presence(scores()[,players_names_col])
     stat_pres <- sort(apply(pres, MARGIN = 2, FUN=function(x){length(which(x))}),
                       decreasing = TRUE)
 
     #graph presence
+    par(bg="#D9F0A3")
     b <- barplot(stat_pres, ylab='Nombre de parties jouées',
                  col='#FC4E2A', xaxt = 'n')
 
     text(x = b-0.25, y=-max(stat_pres)/7, par("usr")[3],
          labels = names(stat_pres),
          srt = 90, pos = 1, cex = 1, xpd = T)
-    
-    #graph roi appele
-    pie(table(tab_scores$Couleur),
-        col=RColorBrewer::brewer.pal(n = 4, name = 'Set1'))
-
-    #graph contrat
-    pie(table(tab_scores$Contrat),
-        col=RColorBrewer::brewer.pal(n = 4, name = 'Set1'))
-
-    #graph Succes
-    pie(c(length(which(tab_scores$Ecart > 0)),
-          length(which(tab_scores$Ecart < 0))),
-        labels = c('Succès Attaque', 'Succès Défense'),
-        col=RColorBrewer::brewer.pal(n = 3, name = 'Set1'))
 
   })
   
+  output$contract <- renderPlot({
+
+    par(bg="#D9F0A3")
+    pie(table(scores()$Contrat),
+        col=RColorBrewer::brewer.pal(n = 4, name = 'Set1'))
+
+  })
+
+  output$king <- renderPlot({
+    
+    par(bg="#D9F0A3")
+    pie(table(scores()$Couleur),
+        col=RColorBrewer::brewer.pal(n = 4, name = 'Set1'))
+
+  })  
+  
+  output$success <- renderPlot({
+    
+    par(bg="#D9F0A3")
+    pie(c(length(which(scores()$Ecart > 0)),
+          length(which(scores()$Ecart < 0))),
+        labels = c('Succès Attaque', 'Succès Défense'),
+        col=RColorBrewer::brewer.pal(n = 3, name = 'Set1'))
+    
+  })
+
 }
   

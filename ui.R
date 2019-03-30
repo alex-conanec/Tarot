@@ -5,7 +5,7 @@ shinyUI(fluidPage(theme = "bootstrap.css",
         </head>
       
         <div id="entete">
-        <h1 id="main_title">Compteur de points de Tarot</h1>
+        <!-- <h1 id="main_title">Compteur de points de Tarot</h1> -->
         </div>'),
   tabsetPanel(
     tabPanel("Manche",

@@ -80,7 +80,7 @@ scoresDisplay <- function(input, output, session, scores){
     #save the new scores
     # write.csv2(scores(), file='www/scores.csv', sep="\t", row.names = FALSE)
     # saveRDS(scores(), file = "www/scores.RDS")
-    drop_save_rds(scores(), "www/scores.RDS", output_dir = output_dir)
+    drop_save_rds(scores(), "www/scores.RDS", path = paste(output_dir, "www", sep = '/'))
     
     #close modal dialog
     removeModal()

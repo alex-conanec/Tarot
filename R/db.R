@@ -1,11 +1,13 @@
-drop_save_rds <- function(data, file, output_dir, ...){
+drop_save_rds <- function(data, file, path, ...){
   saveRDS(data, file, ...)
-  drop_upload(file)
+  drop_upload(file, path = path)
+  print(getwd())
 }
 
 drop_read_rds <- function(file, output_dir, dest = tempdir(), 
                           dtoken = get_dropbox_token(), ...) {
   localfile = paste0(dest, "/", basename(file))
+  print(localfile)
   drop_download(paste(output_dir, file, sep = '/'), local_path = localfile, overwrite = TRUE, dtoken = dtoken)
   readRDS(localfile, ...)
 }

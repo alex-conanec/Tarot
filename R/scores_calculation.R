@@ -6,7 +6,7 @@ scoresCalculation <- function(input, output, session, scores, new=TRUE, row){
     if (new){
       row <- nrow(scores_tab)+1
       shinyjs::reset('main-panel')
-      scores_tab[row,]$Date <- date()
+      scores_tab[row,]$Date <- now("Europe/Paris")
       
     }else{
       removeModal()
@@ -14,7 +14,9 @@ scoresCalculation <- function(input, output, session, scores, new=TRUE, row){
     }
     
     print(paste('calculation :', row))
-    
+
+    # scores_tab[row,'Date'] <- '3'
+    # scores_tab[row,'Date'] <- date()
     scores_tab[row,]$Preneur <- input$preneur
     scores_tab[row,]$Contrat <- input$contrat
     scores_tab[row,]$Couleur <- input$couleur
@@ -135,7 +137,7 @@ scoresCalculation <- function(input, output, session, scores, new=TRUE, row){
     #save the new scores
     # write.csv2(scores(), file='www/scores.csv', sep="\t", row.names = FALSE)
     # saveRDS(scores(), file = "www/scores.RDS")
-    drop_save_rds(scores(), "www/scores.RDS", output_dir = output_dir)
+    drop_save_rds(scores(), "www/scores.RDS", path = paste(output_dir, "www", sep = '/'))
     }, 
     ignoreInit = T)
   

@@ -10,7 +10,7 @@ shinyUI(fluidPage(theme = "bootstrap.css",
   tabsetPanel(
     tabPanel("Manche",
              useShinyjs(debug = TRUE),
-             formUI('main_form', players)
+             formUI('main_form', players, active_players = active_players)
     ),
     tabPanel("Scores",
              scoresDisplayUI('scores')

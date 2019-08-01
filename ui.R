@@ -7,7 +7,7 @@ shinyUI(fluidPage(theme = "bootstrap.css",
         <div id="entete">
         <!-- <h1 id="main_title">Compteur de points de Tarot</h1> -->
         </div>'),
-  tabsetPanel(
+  tabsetPanel(id = "tabs",
     tabPanel("Manche",
              useShinyjs(debug = TRUE),
              formUI('main_form', players, active_players = active_players)
@@ -17,19 +17,6 @@ shinyUI(fluidPage(theme = "bootstrap.css",
              ),
       tabPanel("Stats",
                statsUI('stats')
-               # titlePanel("Stats"),
-               # sidebarLayout(
-               #   sidebarPanel(radioButtons(inputId="choice_graph",
-               #                             label="Choix graphique",
-               #                             choices=c('Total',
-               #                                       'Stats individuelle',
-               #                                       'Stats collectives'),
-               #                             selected='Total'),
-               #                uiOutput("perf_perso_players")),
-               #   mainPanel(wellPanel(shinyjs::useShinyjs(),
-               #                       id = "main-panel2",
-               #                       uiOutput("graph_principal")))
-               #   )
                )
     ),
     HTML('<hr>
@@ -41,5 +28,3 @@ shinyUI(fluidPage(theme = "bootstrap.css",
               </p>
             </div>')
 ))
-
-

@@ -1,146 +1,129 @@
-scoresCalculation <- function(input, output, session, scores, new=TRUE, row){
+scoresCalculation <- function(input, output, session, new=TRUE, ID, scores){
   observeEvent(input$valid, {
-    
-    scores_tab <- scores()
-    
     if (new){
-      row <- nrow(scores_tab)+1
       shinyjs::reset('main-panel')
-      scores_tab[row,]$Date <- now("Europe/Paris")
-      
+      t <- lubridate::now("Europe/Paris")
+      date = lubridate::today("Europe/Paris") %>% as.character()
+      heure = paste(hour(t), minute(t), second(t) %>% round(0), sep = ':')
     }else{
+      cat("scoreCac", ID, "\n")
       removeModal()
-      prev_scores <- scores_tab[row, players_names_col]
+      date <- dbGetQuery(con, 
+                         paste0("SELECT date FROM partie_tarot WHERE id=", ID))
+      heure <- dbGetQuery(con,
+                          paste0("SELECT heure FROM partie_tarot WHERE id=", ID))
     }
     
-    print(paste('calculation :', row))
-
-    # scores_tab[row,'Date'] <- '3'
-    # scores_tab[row,'Date'] <- date()
-    scores_tab[row,]$Preneur <- input$preneur
-    scores_tab[row,]$Contrat <- input$contrat
-    scores_tab[row,]$Couleur <- input$couleur
-    scores_tab[row,]$Appele <- input$appele
-    scores_tab[row,]$Bouts <- input$bouts
-    scores_tab[row,]$Points <- input$point
-    scores_tab[row,]$Ecart <- input$point - c(56, 51, 41, 36)[input$bouts + 1]
-    rownames(scores_tab)[row] <- row
-
-    #marque calculation
+    #game settings
+    partie_df <- data.frame(date = date,
+                            heure = heure,
+                            preneur = input$preneur,
+                            appele = input$appele,
+                            contrat = input$contrat,
+                            couleur = input$couleur,
+                            bouts = input$bouts,
+                            points = input$point,
+                            nb_joueur=length(input$active_players),
+                            stringsAsFactors = F)
+    
+    #annonces
+    if(!is.null(input$annonces)){
+      annonce_df <- lapply(input$annonces, function(annonce){
+        if (annonce != "petit_au_bout"){
+          lapply(input[[annonce]], function(name){
+            c(name, annonce)
+          })
+        }
+      }) %>% unlist() 
+      
+      if (! is.null(annonce_df)){
+        annonce_df <- annonce_df %>% matrix(nrow=2) %>% t() %>%   
+          as.data.frame()
+        colnames(annonce_df) <- c("joueur_id", "type")
+      } #sinon annonce_df est deja null
+    }else{ #si pas d'annonce
+      annonce_df <- NULL
+    }
+    
+    #marque calculation et petit au bout
     if ('petit_au_bout' %in% input$annonces){
-      if (input$petit_au_bout_succes=='Reussi' & input$petit_au_bout_sens=='Attaque' |
-          input$petit_au_bout_succes=='Perdu' & input$petit_au_bout_sens=='Defense'){
+      petit_au_bout_df <- data.frame(camps = input$petit_au_bout_sens,
+                                     succes = input$petit_au_bout_succes)
+      
+      if ((as.logical(input$petit_au_bout_succes) & 
+           input$petit_au_bout_sens == 'Attaque') |
+          (! as.logical(input$petit_au_bout_succes) &
+           input$petit_au_bout_sens == 'Defense')){
         bonus <- 10
+        
       }else{
         bonus <- (-10)
-      }
-
+      } 
     }else{
+      petit_au_bout_df <- NULL
       bonus <- 0
     }
-    scores_tab[row,]$Marque <- (ifelse(scores_tab[row,]$Ecart==0, 1, sign(scores_tab[row,]$Ecart)) *
-      (25 + abs(round(scores_tab[row,]$Ecart/5)*5 )) + bonus) *
-      switch(input$contrat, "Petite"=1, "Garde"=2, "Garde Sans"=4, "Garde Contre"=6)
-
-    #Petit registration ----
-       if(!is.null(input$annonces)){
-        res <- ''
-          if('petit_au_bout' %in% input$annonces){
-            res <- paste(input$petit_au_bout_succes, 
-                         input$petit_au_bout_sens, sep=';')
-          }
-        scores_tab[row,]$Petit <- res
-       }else{
-         scores_tab[row,]$Petit <- ''
-       }
-
-    #Annonce registration ----
-    if(!is.null(input$annonces)){
-      res <- ''
-      for (annonce in input$annonces){
-        if(annonce != 'petit_au_bout'){
-          res <- paste(res, annonce,
-                       paste(input[[annonce]], collapse=', '),
-                       ';', sep='-')
-        }
-      }
-      scores_tab[row,]$Annonces <- res
-    }else{
-      scores_tab[row,]$Annonces <- ''
-    }
-
-    #Score treatement without annonces ----
-    if (row==1){
-      scores_tab[row, players_names_col] <- 0
-    }else{
-      scores_tab[row, players_names_col] <- scores_tab[row - 1, players_names_col]
-    }
-
+    
+    ecart <- input$point - c(56, 51, 41, 36)[input$bouts + 1]
+    marque <- (ifelse(ecart == 0, 1, sign(ecart)) *
+                 (25 + abs(round(ecart/5)*5 )) + bonus) *
+      switch(input$contrat, "Petite" = 1, "Garde" = 2, "Garde Sans" = 4,
+             "Garde Contre" = 6)
+    
+    #complete the game settings with the marque result
+    partie_df$marque <- marque
+    
     if (input$preneur != input$appele){
-      scores_tab[row, input$preneur] <-
-        scores_tab[row, input$preneur] +
-        scores_tab[row,]$Marque * 2
-
-      scores_tab[row, input$appele] <-
-        scores_tab[row, input$appele] +
-        scores_tab[row,]$Marque
-
-      scores_tab[row, which(colnames(scores_tab) != input$appele &
-                          colnames(scores_tab) != input$preneur &
-                          colnames(scores_tab) %in% input$active_players)] <-
-        scores_tab[row, which(colnames(scores_tab) != input$appele &
-                            colnames(scores_tab) != input$preneur &
-                            colnames(scores_tab) %in% input$active_players)] -
-        scores_tab[row,]$Marque
-      # print('ok')
+      preneur <- data.frame(joueur_id = input$preneur, score = marque * 2)
+      appele <- data.frame(joueur_id = input$appele, score = marque)
+      defenseur <- data.frame(joueur_id = 
+                                input$active_players[!input$active_players 
+                                                     %in% c(input$preneur, 
+                                                            input$appele)],
+                              score = - marque)
+      scores_partie_df <- rbind(preneur, appele, defenseur)
     }else{
-     
-      scores_tab[row, input$preneur] <-
-        scores_tab[row, input$preneur] +
-        scores_tab[row,]$Marque * 4
-
-      scores_tab[row, which(colnames(scores_tab) != input$appele &
-                          colnames(scores_tab) != input$preneur &
-                          colnames(scores_tab) %in% input$active_players)] <-
-        scores_tab[row, which(colnames(scores_tab) != input$appele &
-                            colnames(scores_tab) != input$preneur &
-                            colnames(scores_tab) %in% input$active_players)] -
-        scores_tab[row,]$Marque 
-
+      preneur <- data.frame(joueur_id = input$preneur, score = marque * 4)
+      defenseur <- data.frame(joueur_id = 
+                                input$active_players[!input$active_players 
+                                                     %in% c(input$preneur, 
+                                                            input$appele)],
+                              score = - marque)
+      scores_partie_df <- rbind(preneur, defenseur)
     }
-
+    
     #Score treatement with annonces ----
     if (!is.null(input$annonces)){
       for (annonce in input$annonces){
         if (annonce != 'petit_au_bout'){
-          scores_tab[row,] <- annonce_calculation(names=input[[annonce]],
-                                              scores_last_row=scores_tab[row,],
-                                              annonce = annonce,
-                                              active_players=input$active_players,
-                                              preneur=input$preneur,
-                                              appele=input$appele,
-                                              ecart=scores_tab[row,'Ecart'])
+          scores_partie_df <- annonce_calculation(names=input[[annonce]],
+                                                  scores_partie_df = scores_partie_df,
+                                                  annonce = annonce,
+                                                  active_players = input$active_players,
+                                                  preneur = input$preneur,
+                                                  appele = input$appele,
+                                                  ecart = ecart)
         }
       }
     }
-
-    if (! new){
-      delta <- prev_scores - scores_tab[row, players_names_col] 
-      if (row < nrow(scores_tab)){
-        scores_tab <- update_prev_scores(scores_tab, delta, row_to_start = row + 1)
+    
+    # push the score into the db
+    if (new){
+      if(insert_score(con, game = "tarot", partie_df, scores_partie_df,
+                      petit_au_bout_df, annonce_df)){
+        cat("Insertion de la partie ok \n")
       }
+    }else{
+      # print(annonce_df)
+      # print(petit_au_bout_df)
+      update_score(con, game = "tarot", partie_df, scores_partie_df,
+                   petit_au_bout_df, annonce_df, id = ID)
+      # cat("Update de la partie ok \n") #check if you can test the return value....
     }
     
-    scores(scores_tab)
-    callModule(scoresDisplay, 'scores', scores)
-    
-    #save the new scores
-    # write.csv2(scores(), file='www/scores.csv', sep="\t", row.names = FALSE)
-    # saveRDS(scores(), file = "www/scores.RDS")
-    drop_save_rds(scores(), "www/scores.RDS", path = paste(output_dir, "www", sep = '/'))
-    }, 
-    ignoreInit = T)
-  
+    scores(load_scores(con))
+    callModule(scoresDisplay, 'scores', scores = scores)
+  })
 }
 
 succes_poignee <- function(name, preneur, appele, ecart){
@@ -161,12 +144,12 @@ succes_poignee <- function(name, preneur, appele, ecart){
   res
 }
 
-annonce_calculation <- function(names, scores_last_row, annonce, 
+annonce_calculation <- function(names, scores_partie_df, annonce, 
                                 preneur, appele, ecart, active_players,
                                 bonus = c(poignee=20, double_poignee=30, 
                                           triple_poignee=40, misere=10, 
                                           double_misere=20)){
-  rownames(scores_last_row) <- 1
+  
   for (name in names){
     if (grepl(pattern='poignee', annonce)){
       if (! succes_poignee(name, preneur, appele, ecart)){
@@ -174,27 +157,12 @@ annonce_calculation <- function(names, scores_last_row, annonce,
       }
     }
     
-    scores_last_row[1, name] <- scores_last_row[1, name] + bonus[annonce] * (length(active_players)-1)
+    name_row <- which(scores_partie_df$joueur_id == name)
+    scores_partie_df[name_row, 2] <- scores_partie_df[name_row, 2] +
+      bonus[annonce] * (length(active_players)-1)
     
-    scores_last_row[1, which(colnames(scores_last_row) != name &
-                        colnames(scores_last_row) %in% active_players)] <-
-      scores_last_row[1, which(colnames(scores_last_row) != name &
-                                 colnames(scores_last_row) %in% active_players)] - 
+    scores_partie_df[-name_row, 2] <- scores_partie_df[-name_row, 2] - 
       bonus[annonce]
   }
-  scores_last_row
-}
-
-update_prev_scores <- function(scores, delta, row_to_start) {
-
-
-  delta <- matrix(as.matrix(delta), 
-                  nrow = nrow(scores) - row_to_start + 1, 
-                  ncol=ncol(delta), byrow = T)
-
-  scores[(as.numeric(rownames(scores)) >= row_to_start), players_names_col] <-
-    scores[(as.numeric(rownames(scores)) >= row_to_start), players_names_col] - delta
- 
-  scores
-  
+  scores_partie_df
 }

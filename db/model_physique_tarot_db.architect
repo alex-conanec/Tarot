@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<architect-project version="1.0" appversion="1.0.8">
+ <project-name>model_physique_tarot_db</project-name>
+ <print-settings numCopies="1" zoom="1.0" pageNumbersPrinted="true" orientation="1" paperWidth="612.0" paperHeight="792.0" leftBorder="50.0" rightBorder="50.0" topBorder="50.0" bottomBorder="50.0" />
+ <project-data-sources>
+  <data-source id="DS0">
+   <property key="Logical" value="PlayPen Database" />
+  </data-source>
+ </project-data-sources>
+ <source-databases>
+ </source-databases>
+ <target-database id="ppdb" dbcs-ref="DS0">
+  <table id="TAB1" populated="true" UUID="e1abe03a-984c-4732-bfd6-b3c5a40bcec9" name="Joueur" objectType="TABLE" physicalName="Joueur" >
+   <remarks></remarks>
+   <folder id="FOLTAB11" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL2" populated="true" UUID="7a9f253c-1728-439b-8284-ecb0cff59e7f" autoIncrement="false" autoIncrementSequenceName="Joueur_Pseudo_seq" defaultValue="" name="Pseudo" nullable="0" physicalName="Pseudo" precision="50" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL3" populated="true" UUID="89a3132f-02b4-4de4-b508-4d3f6a0985fe" autoIncrement="false" autoIncrementSequenceName="Joueur_Nom_seq" defaultValue="" name="Nom" nullable="0" physicalName="Nom" precision="50" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL4" populated="true" UUID="8be6d5c8-0f46-4442-b666-c00e0e7bc7c9" autoIncrement="false" autoIncrementSequenceName="Joueur_Prenom_seq" defaultValue="" name="Prenom" nullable="0" physicalName="Prenom" precision="50" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL5" populated="true" UUID="cb4a9244-ff61-4d37-9b82-0b607d0cd19e" autoIncrement="false" autoIncrementSequenceName="Joueur_email_seq" defaultValue="" name="email" nullable="0" physicalName="email" precision="100" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB13" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB12" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB14" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX6" populated="true" UUID="42cc4f66-6771-45f8-b966-7ffdbff27d76" clustered="false" name="Joueur_pk" physicalName="joueur_pk" primaryKeyIndex="true" unique="false" >
+     <index-column id="IDC7" populated="true" UUID="57d341e0-d780-48db-8c57-bf37d6a2dafa" ascendingOrDescending="UNSPECIFIED" column-ref="COL2" name="Pseudo" physicalName="Pseudo" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB8" populated="true" UUID="eea92bb8-a2c0-4314-a7cf-cd873a4519e7" name="Partie_tarot" objectType="TABLE" physicalName="Partie_tarot" >
+   <remarks></remarks>
+   <folder id="FOLTAB81" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL9" populated="true" UUID="c9698936-deb5-4f4a-ba5c-853abc4bfcbe" autoIncrement="true" autoIncrementSequenceName="Partie_tarot_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="0" primaryKeySeq="0" referenceCount="2" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL10" populated="true" UUID="29a12b79-4bc7-42a2-8be6-f56e8d6adf40" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_Date_seq" defaultValue="" name="Date" nullable="0" physicalName="Date" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
+     <remarks></remarks>
+    </column>
+    <column id="COL11" populated="true" UUID="bfacbb57-59a1-4df5-9aa6-ec5df8c2e13c" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_Heure_seq" defaultValue="" name="Heure" nullable="1" physicalName="Heure" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="92" userDefinedTypeUUID="10d6960f-169d-47c2-860a-37341342b1d5" >
+     <remarks></remarks>
+    </column>
+    <column id="COL12" populated="true" UUID="eafa1fc1-c6a2-4e9f-bb64-00d7510b461f" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_Contrat_seq" defaultValue="" name="Contrat" nullable="0" physicalName="Contrat" precision="20" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL13" populated="true" UUID="849c0bf2-3adf-4781-b1ae-c33707129941" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_Bouts_seq" defaultValue="" name="Bouts" nullable="0" physicalName="Bouts" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL14" populated="true" UUID="ccd235a3-4d9c-41d2-bda5-820e95849efa" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_Points_seq" defaultValue="" name="Points" nullable="0" physicalName="Points" precision="3" referenceCount="1" scale="1" sourceDataTypeName="UserDefinedSQLType" type="3" userDefinedTypeUUID="cc1304ea-628a-4fc5-a84a-06ba14759152" >
+     <remarks></remarks>
+    </column>
+    <column id="COL15" populated="true" UUID="fdc9220a-d9d9-4462-b50c-59a86950fa43" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_nb_joueur_seq" defaultValue="" name="nb_joueur" nullable="1" physicalName="nb_joueur" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL16" populated="true" UUID="dff0a104-8d74-46ab-b91c-8b5530391737" autoIncrement="false" autoIncrementSequenceName="Joueur_Pseudo_seq" defaultValue="" name="preneur" nullable="0" physicalName="preneur" precision="50" referenceCount="2" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL17" populated="true" UUID="db363782-c246-40fb-96a7-c0d570ea224f" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_appele_seq" defaultValue="" name="appele" nullable="0" physicalName="appele" precision="50" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL18" populated="true" UUID="29acd574-5c31-47a2-96a8-c48275dc8a9d" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_couleur_seq" defaultValue="" name="couleur" nullable="0" physicalName="couleur" precision="20" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL19" populated="true" UUID="64bf994a-de56-4f28-9c4f-d8950815a697" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_marque_seq" defaultValue="" name="marque" nullable="0" physicalName="marque" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB83" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB82" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB84" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX20" populated="true" UUID="c35d4de8-57a7-4fe9-a64d-db7ed00e8dea" clustered="false" name="Partie_tarot_pk" physicalName="partie_tarot_pk" primaryKeyIndex="true" unique="false" >
+     <index-column id="IDC21" populated="true" UUID="37f4d3c4-de21-43c7-a1de-cb43ce975a1b" ascendingOrDescending="UNSPECIFIED" column-ref="COL9" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB22" populated="true" UUID="cbe1273e-3469-4948-a7d7-955b77e69fe7" name="Annonce" objectType="TABLE" physicalName="Annonce" >
+   <remarks></remarks>
+   <folder id="FOLTAB221" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL23" populated="true" UUID="fec3d5ed-adff-426c-b65e-7891d57582ae" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_id_seq" defaultValue="" name="partie_tarot_id" nullable="0" physicalName="partie_tarot_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL24" populated="true" UUID="5cd0e738-2ae6-4f8f-884d-94b8f66b2241" autoIncrement="false" autoIncrementSequenceName="Joueur_Pseudo_seq" defaultValue="" name="joueur_id" nullable="0" physicalName="joueur_id" precision="50" primaryKeySeq="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL25" populated="true" UUID="abd9810a-fcf4-4ba8-90a7-88c00b14f94e" autoIncrement="false" autoIncrementSequenceName="Annonce_Type_seq" defaultValue="" name="Type" nullable="0" physicalName="Type" precision="20" primaryKeySeq="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB223" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB222" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB224" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX26" populated="true" UUID="f0bdc5f7-1056-45d0-9499-5b78b397612c" clustered="false" name="Annonce_pk" physicalName="annonce_pk" primaryKeyIndex="true" unique="false" >
+     <index-column id="IDC27" populated="true" UUID="8bb64cb9-a8f1-44d3-9026-36edad021419" ascendingOrDescending="UNSPECIFIED" column-ref="COL23" name="partie_tarot_id" physicalName="partie_tarot_id" />
+     <index-column id="IDC28" populated="true" UUID="6272556e-80a5-483e-822d-b26b91344f61" ascendingOrDescending="UNSPECIFIED" column-ref="COL24" name="joueur_id" physicalName="joueur_id" />
+     <index-column id="IDC29" populated="true" UUID="1a2b8a43-7ebb-40fd-a5b7-7fcc09c28e73" ascendingOrDescending="UNSPECIFIED" column-ref="COL25" name="Type" physicalName="Type" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB30" populated="true" UUID="6eb806d3-7372-4066-aed8-8c531961e23d" name="Goulash" objectType="TABLE" physicalName="Goulash" >
+   <remarks></remarks>
+   <folder id="FOLTAB301" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL31" populated="true" UUID="e3f3dee4-fdc4-4ec0-afa4-c7f00f3739cf" autoIncrement="true" autoIncrementSequenceName="Goulash_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL32" populated="true" UUID="b2bdffad-5333-49d3-8fd1-d7b0536aea48" autoIncrement="false" autoIncrementSequenceName="Goulash_Date_seq" defaultValue="" name="Date" nullable="0" physicalName="Date" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
+     <remarks></remarks>
+    </column>
+    <column id="COL33" populated="true" UUID="7cb5afec-b011-49dc-a13f-5bfd525f646e" autoIncrement="false" autoIncrementSequenceName="Goulash_Heure_seq" defaultValue="" name="Heure" nullable="1" physicalName="Heure" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="92" userDefinedTypeUUID="10d6960f-169d-47c2-860a-37341342b1d5" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB303" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB302" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB304" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX34" populated="true" UUID="5ac150dd-ec37-4b73-84cc-8996a1494644" clustered="false" name="Goulash_pk" physicalName="goulash_pk" primaryKeyIndex="true" unique="false" >
+     <index-column id="IDC35" populated="true" UUID="46103149-7c27-4a24-a73d-b7ab53da67b5" ascendingOrDescending="UNSPECIFIED" column-ref="COL31" name="id" physicalName="id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB36" populated="true" UUID="09e693ef-9e0c-4006-86de-77672a5ca84c" name="Petit_au_bout" objectType="TABLE" physicalName="Petit_au_bout" >
+   <remarks></remarks>
+   <folder id="FOLTAB361" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL37" populated="true" UUID="a86fde7e-f637-4bc6-a492-f18438832e5c" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_id_seq" defaultValue="" name="partie_tarot_id" nullable="0" physicalName="partie_tarot_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL38" populated="true" UUID="875131cb-f445-4548-bbd1-44dcc5643e8e" autoIncrement="false" autoIncrementSequenceName="Petit_au_bout_Camps_seq" defaultValue="" name="Camps" nullable="0" physicalName="Camps" precision="20" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL39" populated="true" UUID="ae312815-9caf-4621-8c08-b74e6bcbce35" autoIncrement="false" autoIncrementSequenceName="Petit_au_bout_Succes_seq" defaultValue="" name="Succes" nullable="0" physicalName="Succes" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="16" userDefinedTypeUUID="a26374aa-3026-4bb8-b564-eb2e186dfa5d" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB363" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB362" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB364" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX40" populated="true" UUID="054629b1-366c-4751-8c82-487961e14360" clustered="false" name="Petit_au_bout_pk" physicalName="petit_au_bout_pk" primaryKeyIndex="true" unique="false" >
+     <index-column id="IDC41" populated="true" UUID="960b7c3d-a4ec-4250-9945-0fdf4ee458ed" ascendingOrDescending="UNSPECIFIED" column-ref="COL37" name="partie_tarot_id" physicalName="partie_tarot_id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB42" populated="true" UUID="5167656e-54b0-44c2-ba25-dd7be3a13861" name="Scores_goulash" objectType="TABLE" physicalName="Scores_goulash" >
+   <remarks></remarks>
+   <folder id="FOLTAB421" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL43" populated="true" UUID="b1b6358b-e24f-4f95-8ed7-8a295bc1ca26" autoIncrement="false" autoIncrementSequenceName="Goulash_id_seq" defaultValue="" name="partie_goulash_id" nullable="0" physicalName="partie_goulash_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL44" populated="true" UUID="bd3c91aa-50a4-4bc3-a63c-0ae87ecd62f4" autoIncrement="false" autoIncrementSequenceName="Joueur_Pseudo_seq" defaultValue="" name="joueur_id" nullable="0" physicalName="joueur_id" precision="50" primaryKeySeq="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL45" populated="true" UUID="50355fb2-0066-487e-b9ad-d396a0355920" autoIncrement="false" autoIncrementSequenceName="Scores_goulash_Score_seq" defaultValue="" name="Score" nullable="0" physicalName="Score" precision="3" referenceCount="1" scale="1" sourceDataTypeName="UserDefinedSQLType" type="3" userDefinedTypeUUID="cc1304ea-628a-4fc5-a84a-06ba14759152" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB423" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB422" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB424" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX46" populated="true" UUID="39301fc3-3410-4ac2-aced-7f26c0736c06" clustered="false" name="Scores_goulash_pk" physicalName="scores_goulash_pk" primaryKeyIndex="true" unique="false" >
+     <index-column id="IDC47" populated="true" UUID="9500883a-51da-4dc9-b0ef-0b2f759fb870" ascendingOrDescending="UNSPECIFIED" column-ref="COL43" name="partie_goulash_id" physicalName="partie_goulash_id" />
+     <index-column id="IDC48" populated="true" UUID="4d894dc5-01ac-41b2-b147-2a354036c6fe" ascendingOrDescending="UNSPECIFIED" column-ref="COL44" name="joueur_id" physicalName="joueur_id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB49" populated="true" UUID="11f72545-6068-4429-9772-c3a0584729a7" name="Defense" objectType="TABLE" physicalName="Defense" >
+   <remarks></remarks>
+   <folder id="FOLTAB491" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL50" populated="true" UUID="e9691da0-a587-4249-a62c-c8f6b7e0e444" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_id_seq" defaultValue="" name="partie_tarot_id" nullable="0" physicalName="partie_tarot_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL51" populated="true" UUID="7fe1e52b-4c32-48a7-96b9-0387191821fb" autoIncrement="false" autoIncrementSequenceName="Joueur_Pseudo_seq" defaultValue="" name="joueur_id" nullable="0" physicalName="joueur_id" precision="50" primaryKeySeq="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB493" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB492" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB494" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX52" populated="true" UUID="1905eb7f-4958-4352-b162-5469699bb735" clustered="false" name="Defense_pk" physicalName="defense_pk" primaryKeyIndex="true" unique="false" >
+     <index-column id="IDC53" populated="true" UUID="ea619da5-f50a-498a-9bd5-6520b6576b12" ascendingOrDescending="UNSPECIFIED" column-ref="COL50" name="partie_tarot_id" physicalName="partie_tarot_id" />
+     <index-column id="IDC54" populated="true" UUID="b6db0ae2-8694-41cd-855b-3c72b8c3fe9a" ascendingOrDescending="UNSPECIFIED" column-ref="COL51" name="joueur_id" physicalName="joueur_id" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB55" populated="true" UUID="8986b42c-2b9e-4bb2-baec-bac322b315fd" name="Scores_tarot" objectType="TABLE" physicalName="Scores_tarot" >
+   <remarks></remarks>
+   <folder id="FOLTAB551" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL56" populated="true" UUID="f954a3b6-6872-4e42-9eda-ea108815e980" autoIncrement="false" autoIncrementSequenceName="Partie_tarot_id_seq" defaultValue="" name="partie_tarot_id" nullable="0" physicalName="partie_tarot_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL57" populated="true" UUID="162644aa-7b9c-4712-9f38-2a1dceccb04f" autoIncrement="false" autoIncrementSequenceName="Joueur_Pseudo_seq" defaultValue="" name="joueur_id" nullable="0" physicalName="joueur_id" precision="50" primaryKeySeq="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL58" populated="true" UUID="3bbf5a0f-dc78-477d-922f-85e016abce4a" autoIncrement="false" autoIncrementSequenceName="Scores_tarot_score_seq" defaultValue="" name="score" nullable="0" physicalName="score" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB553" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB552" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB554" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX59" populated="true" UUID="9b667cc7-116a-4da7-93b0-85e6afe15122" clustered="false" name="Scores_tarot_pk" physicalName="scores_tarot_pk" primaryKeyIndex="true" unique="false" >
+     <index-column id="IDC60" populated="true" UUID="8bdc5fbe-ea45-4d7f-9c52-7b0ac7233ab5" ascendingOrDescending="UNSPECIFIED" column-ref="COL56" name="partie_tarot_id" physicalName="partie_tarot_id" />
+     <index-column id="IDC61" populated="true" UUID="a152ad89-e90a-4a8b-bb95-b03b8757af95" ascendingOrDescending="UNSPECIFIED" column-ref="COL57" name="joueur_id" physicalName="joueur_id" />
+    </index>
+   </folder>
+  </table>
+  <relationships>
+   <relationship id="REL62" populated="true" UUID="217ebb53-383c-462b-aa11-3031a4c26eb5" deferrability="7" deleteRule="0" fk-table-ref="TAB49" fkCardinality="7" identifying="true" name="Joueur_Defense_fk" physicalName="joueur_defense_fk" pk-table-ref="TAB1" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP63" populated="true" UUID="b1d583f0-13fa-4a12-8195-ab67bdac02ba" fk-column-ref="COL51" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL2" />
+   </relationship>
+   <relationship id="REL64" populated="true" UUID="f318ee00-ee6f-40eb-8de5-1feae850943a" deferrability="7" deleteRule="0" fk-table-ref="TAB8" fkCardinality="7" identifying="false" name="Joueur_Partie_tarot_fk" physicalName="joueur_partie_tarot_fk" pk-table-ref="TAB1" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP65" populated="true" UUID="697b9628-a171-4081-a77c-2a33fd2974e7" fk-column-ref="COL17" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL2" />
+   </relationship>
+   <relationship id="REL66" populated="true" UUID="f166f3f1-d8bf-4def-8b23-275c3034348d" deferrability="7" deleteRule="0" fk-table-ref="TAB8" fkCardinality="7" identifying="false" name="Joueur_Partie_tarot_fk1" physicalName="joueur_partie_tarot_fk1" pk-table-ref="TAB1" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP67" populated="true" UUID="3c89102e-d783-4512-9289-62a64e30433f" fk-column-ref="COL16" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL2" />
+   </relationship>
+   <relationship id="REL68" populated="true" UUID="d573562e-3829-4115-ac42-983c80b32c88" deferrability="7" deleteRule="0" fk-table-ref="TAB22" fkCardinality="7" identifying="true" name="Joueur_Annonce_fk" physicalName="joueur_annonce_fk" pk-table-ref="TAB1" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP69" populated="true" UUID="4f6cd2e2-b1ca-42a5-8fc7-381c13dea6aa" fk-column-ref="COL24" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL2" />
+   </relationship>
+   <relationship id="REL70" populated="true" UUID="7c3c86bb-d634-4464-87b3-54f121a09c87" deferrability="7" deleteRule="0" fk-table-ref="TAB42" fkCardinality="7" identifying="true" name="Joueur_Scores_goulash_fk" physicalName="joueur_scores_goulash_fk" pk-table-ref="TAB1" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP71" populated="true" UUID="333c49df-077a-433b-95a5-eedbd911e12b" fk-column-ref="COL44" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL2" />
+   </relationship>
+   <relationship id="REL72" populated="true" UUID="4314729f-311c-4532-8d97-47c786d9d5b2" deferrability="7" deleteRule="0" fk-table-ref="TAB55" fkCardinality="7" identifying="true" name="Joueur_Scores_tarot_fk" physicalName="joueur_scores_tarot_fk" pk-table-ref="TAB1" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP73" populated="true" UUID="43921339-cc2c-4d34-a971-7f552db5758e" fk-column-ref="COL57" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL2" />
+   </relationship>
+   <relationship id="REL74" populated="true" UUID="4261a01a-68e7-40d1-b26b-3b32be840a7a" deferrability="7" deleteRule="0" fk-table-ref="TAB49" fkCardinality="7" identifying="true" name="Partie_tarot_Defense_fk" physicalName="partie_tarot_defense_fk" pk-table-ref="TAB8" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP75" populated="true" UUID="72baf7d3-a2a7-473b-a56a-72f3e202f948" fk-column-ref="COL50" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL9" />
+   </relationship>
+   <relationship id="REL76" populated="true" UUID="c9259f04-052a-47bd-8867-ab04a1100b7d" deferrability="7" deleteRule="0" fk-table-ref="TAB22" fkCardinality="7" identifying="true" name="Partie_tarot_Annonce_fk" physicalName="partie_tarot_annonce_fk" pk-table-ref="TAB8" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP77" populated="true" UUID="8812f7b1-eea3-4223-b499-4c11b8e2c7d5" fk-column-ref="COL23" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL9" />
+   </relationship>
+   <relationship id="REL78" populated="true" UUID="838aed8c-3b3e-4d89-9740-bc1fa161dd74" deferrability="7" deleteRule="0" fk-table-ref="TAB36" fkCardinality="7" identifying="true" name="Partie_tarot_Petit_au_bout_fk" physicalName="partie_tarot_petit_au_bout_fk" pk-table-ref="TAB8" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP79" populated="true" UUID="7e5fb272-cd36-4db8-ae9e-932af3f6ea40" fk-column-ref="COL37" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL9" />
+   </relationship>
+   <relationship id="REL80" populated="true" UUID="e8da6c4e-3eca-4278-b530-30f8c9589367" deferrability="7" deleteRule="0" fk-table-ref="TAB55" fkCardinality="7" identifying="true" name="Partie_tarot_Scores_tarot_fk" physicalName="partie_tarot_scores_tarot_fk" pk-table-ref="TAB8" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP81" populated="true" UUID="869cfb77-d3d5-496e-a3e3-f7eb099095ea" fk-column-ref="COL56" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL9" />
+   </relationship>
+   <relationship id="REL82" populated="true" UUID="acc913ba-f202-4df2-ae7a-bf55cccd43b8" deferrability="7" deleteRule="0" fk-table-ref="TAB42" fkCardinality="7" identifying="true" name="Goulash_Scores_goulash_fk" physicalName="goulash_scores_goulash_fk" pk-table-ref="TAB30" pkCardinality="2" updateRule="0" >
+    <column-mapping id="CMP83" populated="true" UUID="7c8a71ef-bc68-4542-9f72-970a5362027e" fk-column-ref="COL43" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL31" />
+   </relationship>
+  </relationships>
+ </target-database>
+ <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="false" target-schema="public"> </ddl-generator>
+ <liquibase-settings useSeparateChangeSets="false" generateId="false" idStart="1"/>
+ <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
+ <play-pen zoom="1.0" viewportX="0" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
+  <table-pane table-ref="TAB1" x="307" y="199" bgColor="0xeeeeee" fgColor="0x5a6986" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB8" x="709" y="200" bgColor="0xeeeeee" fgColor="0x206cff" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB22" x="199" y="476" bgColor="0xeeeeee" fgColor="0xcc0000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB30" x="46" y="334" bgColor="0xeeeeee" fgColor="0x206cff" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB36" x="724" y="37" bgColor="0xeeeeee" fgColor="0xcc0000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB42" x="30" y="32" bgColor="0xeeeeee" fgColor="0xcc0000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB49" x="394" y="35" bgColor="0xeeeeee" fgColor="0xcc0000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB55" x="579" y="479" bgColor="0xeeeeee" fgColor="0xcc0000" rounded="false" dashed="false"/>
+  <table-link relationship-ref="REL74" pkConnection="0.2076271186440678" fkConnection="0.6112956810631229" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL62" pkConnection="0.6708860759493671" fkConnection="0.4219269102990033" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL64" pkConnection="0.3821138211382114" fkConnection="0.2727272727272727" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL66" pkConnection="0.8571428571428571" fkConnection="0.536723163841808" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="33"/>
+  <table-link relationship-ref="REL68" pkConnection="0.10970464135021098" fkConnection="0.24584717607973422" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL76" pkConnection="0.9307359307359307" fkConnection="0.8272425249169435" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="130"/>
+  <table-link relationship-ref="REL78" pkConnection="0.2033898305084746" fkConnection="1.0" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="65"/>
+  <table-link relationship-ref="REL82" pkConnection="0.12315270935960591" fkConnection="0.4953271028037383" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="72"/>
+  <table-link relationship-ref="REL70" pkConnection="0.43089430894308944" fkConnection="0.7538940809968847" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="66"/>
+  <table-link relationship-ref="REL80" pkConnection="0.659919028340081" fkConnection="0.4312796208530806" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="132"/>
+  <table-link relationship-ref="REL72" pkConnection="0.8607594936708861" fkConnection="0.019867549668874173" rLineColor="0x4c4c4c" pkLabelText="" fkLabelText="" orientation="132"/>
+ </play-pen>
+ <critic-manager>
+  <critic-grouping platformType="Generic" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.PrimaryKeyCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.RelationshipMappingTypeCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.EmptyRelationshipCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.AlphaNumericNameCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.AlphaNumericSequenceNameCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SetDefaultOnColumnWithNoDefaultCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SetNullOnNonNullableColumnCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.DuplicateNameCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="DB2" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.DB2UnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="H2" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.H2UnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="HSQLDB" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.HSQLDBUnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="MySQL" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.MySQLCommentCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.MySQLReservedWordsCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.MySQLUnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="Oracle" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.OraclePhysicalNameCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.OracleReservedWordsCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.OracleUnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="PostgreSQL" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.PostgreSQLReservedWordsCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="SQL Server" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SQLServerUnsupportedFeaturesCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SQLServerReservedWordsCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="SQL Server 2000" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SQLServer2000UnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="SQL Server 2005" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SQLServer2005UnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+ </critic-manager>
+ <profiles topNCount="10">
+  </profiles>
+  <olap>
+  </olap>
+  <olap-gui>
+  </olap-gui>
+</architect-project>

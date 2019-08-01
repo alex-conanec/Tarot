@@ -40,11 +40,11 @@ formUI <- function(id, players, active_players=NULL, couleur=NULL,
                        checkboxGroupInput(inputId=ns("annonces"), 
                                           label='Annonces',
                                           choiceNames=list('Poignée', 'Double poignée',
-                                                        'Triple poignée','Misère', 
-                                                        'Double Misère', 'Petit au bout'),
+                                                           'Triple poignée','Misère', 
+                                                           'Double Misère', 'Petit au bout'),
                                           choiceValues=list('poignee', 'double_poignee',
-                                                         'triple_poignee', 'misere', 
-                                                         'double_misere', 'petit_au_bout'),
+                                                            'triple_poignee', 'misere', 
+                                                            'double_misere', 'petit_au_bout'),
                                           selected=annonces))),
                 fluidRow(column(width = 6, 
                                 numericInput(inputId=ns('bouts'), 'Bouts', 
@@ -56,7 +56,7 @@ formUI <- function(id, players, active_players=NULL, couleur=NULL,
                                 numericInput(inputId=ns('point'), 'Points', 
                                              value=points,
                                              min=0, max=94, step=0.5))
-                         ),
+                ),
                 fluidRow(uiOutput(ns("validation")))
       )
     )
@@ -64,29 +64,33 @@ formUI <- function(id, players, active_players=NULL, couleur=NULL,
 }
 
 form <- function(input, output, session, preneur=NULL, appele=NULL,
-                 annonce_players=c('poignee'=NULL, 'double_poignee'=NULL,
-                                    'triple_poignee'=NULL, 'misere'=NULL, 
-                                    'double_misere'=NULL),
-                 petit_au_bout_succes=NULL, petit_au_bout_sens=NULL) {
-
+                 annonce_players = NULL, petit_au_bout_succes=NULL, 
+                 petit_au_bout_sens=NULL) {
+  
+  if (is.null(annonce_players)){
+    annonce_players <- c('poignee'=NULL, 'double_poignee'=NULL,
+                         'triple_poignee'=NULL, 'misere'=NULL,
+                         'double_misere'=NULL)
+  }
+  
   output$preneur <- renderUI({
     ns <- session$ns
     selectizeInput(ns("preneur"), "Preneur", choices=input$active_players,
                    selected=preneur)
   })
-
+  
   output$appele <- renderUI({
     ns <- session$ns
     selectizeInput(ns("appele"), "Appelé", choices=input$active_players,
                    selected=appele)
   })
-
+  
   output$players_annonce <- renderUI({
     ns <- session$ns
     if (!is.null(input$annonces)){
       
       lapply(input$annonces, function(annonce) {
-
+        
         if (annonce!='petit_au_bout'){
           tagList(checkboxGroupInput(inputId=ns(annonce),
                                      label=annonce,
@@ -96,14 +100,14 @@ form <- function(input, output, session, preneur=NULL, appele=NULL,
           tagList(radioButtons(inputId=ns("petit_au_bout_succes"),
                                label='Petit au bout',
                                choiceNames=list('Réussi', 'Perdu'),
-                               choiceValues=list('Reussi', 'Perdu'),
+                               choiceValues=list(TRUE, FALSE),
                                selected = petit_au_bout_succes),
                   radioButtons(inputId=ns("petit_au_bout_sens"),
                                label='Par',
                                choiceNames=list('Attaque', 'Défense'),
                                choiceValues=list('Attaque', 'Defense'),
                                selected = petit_au_bout_sens)
-                  )
+          )
         }
       })
     }
@@ -123,6 +127,7 @@ validForm <- function(input, output, session, disabled_button=TRUE) {
     }
   })
   
+  #voir si on peut pas rajouter un truc pour surveiller les miseres
   observe(
     toggleState("valid", condition = (
       (length(input$active_players) == 5) &

@@ -7,26 +7,31 @@ app_ui <- function() {
     # List the first level UI elements here
     
     fluidPage(
-      # includeHTML("inst/app/www/header.html"),
-      tabsetPanel(id = "tabs",
-                  tabPanel("Manche",
-                           mod_form_ui("form_ui_1"
-                                       # , 
-                                       # players = players,
-                                       # active_players = active_players
-                                       )
-                           ),
-                  tabPanel("Scores",
-                           mod_scores_display_ui("scores_display_ui_1")
-                  ),
-                  tabPanel("Stats",
-                           mod_stat_ui("stat_ui_1")
-                           )
-                  )
-      # ,
-      # includeHTML("inst/app/www/footer.html")
-    )             
-  )
+      shiny::htmlTemplate(
+        system.file("templates", "template.html", package = "Tarot"),
+        title = "Tarot",
+        tabsetPanel = tabsetPanel(id = "tabs",
+                       tabPanel("Manche",
+                                mod_form_ui("form_ui_1"
+                                            # ,
+                                            # players = players,
+                                            # active_players = active_players
+                                )
+                       ),
+                       tabPanel("Scores",
+                                mod_scores_display_ui("scores_display_ui_1")
+                       ),
+                       tabPanel("Stats",
+                                mod_stat_ui("stat_ui_1")
+                       )
+         ),
+        footer = htmlTemplate(
+          system.file("templates", "footer.html", package = "Tarot")
+        )
+
+      ) #templateHTML
+    ) #fluidPage             
+  ) #taglist
 }
 
 #' @import shiny

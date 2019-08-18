@@ -44,3 +44,11 @@ df_postgres
 # close the connection
 dbDisconnect(con)
 dbUnloadDriver(drv)
+
+
+# # close the connection
+# lapply(dbListConnections(PostgreSQL()), function(con){
+#   dbDisconnect(con)
+# })
+# dbUnloadDriver(drv)
+# dbListConnections(PostgreSQL())

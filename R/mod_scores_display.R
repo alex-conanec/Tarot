@@ -1,31 +1,51 @@
-scoresDisplayUI <- function(id) {
+# Module UI
   
+#' @title   mod_scores_display_ui and mod_scores_display_server
+#' @description  A shiny Module.
+#'
+#' @param id shiny id
+#' @param input internal
+#' @param output internal
+#' @param session internal
+#'
+#' @rdname mod_scores_display
+#'
+#' @keywords internal
+#' @export 
+#' @importFrom shiny NS tagList 
+mod_scores_display_ui <- function(id){
   ns <- NS(id)
-  
-  titlePanel(ns("Scores"))
-  wellPanel(fluidRow(column(width = 10,
-                            DT::dataTableOutput(ns('scores_df'))
-                            ),
-                     column(width = 2,
-                            verticalLayout( 
-                              actionButton(inputId = ns("delete"), 
-                                       label = "Supprimer",
-                                       disabled = TRUE),
-                              actionButton(inputId = ns("modify"), 
-                                       label = "Modifier", 
-                                       disabled = TRUE),
-                              downloadLink(ns('downloadData'), 'Télécharger')
-                              )
-                            ),
-                     column(width = 5,
-                            DT::dataTableOutput(ns('anonnce_df'))
-                     )
-                     )
-            )
+  tagList(
+    wellPanel(
+      fluidRow(column(width = 10,
+                      DT::dataTableOutput(ns('scores_df'))
+                      ),
+               column(width = 2, verticalLayout(
+                 actionButton(inputId = ns("delete"),
+                              label = "Supprimer",
+                              disabled = TRUE),
+                 actionButton(inputId = ns("modify"), 
+                              label = "Modifier", 
+                              disabled = TRUE),
+                 downloadLink(ns('downloadData'), 'Télécharger'))
+                      ),
+               column(width = 5, DT::dataTableOutput(ns('anonnce_df'))
+                      )
+               )
+      )
+  )
 }
-
-scoresDisplay <- function(input, output, session, scores){
-
+    
+# Module Server
+    
+#' @rdname mod_scores_display
+#' @export
+#' @keywords internal
+    
+mod_scores_display_server <- function(input, output, session, con_param, scores, 
+                                      disabled_button){
+  ns <- session$ns
+  
   output$scores_df <- DT::renderDataTable({
     DT::datatable(scores()[order(as.numeric(row.names(scores())), 
                                  decreasing = TRUE), ],
@@ -38,7 +58,7 @@ scoresDisplay <- function(input, output, session, scores){
                                  scrollY = 300, scroller = TRUE, scrollX = T),
                   editable = FALSE, selection = 'single')      
   })
-
+  
   id <- reactive({
     row <- sort(1:nrow(scores()), decreasing = TRUE)[input$scores_df_rows_selected]     
     scores()[row,]$id
@@ -48,11 +68,15 @@ scoresDisplay <- function(input, output, session, scores){
     
     if (!is.null(input$scores_df_rows_selected)){
       if (! scores() %>% filter(id == id()) %>% pull(annonce) %>% is.na()){
+        con <- do.call(db_con, con_param)
+        data <- dbGetQuery(con, paste0("SELECT type AS Annonce,
+                                        joueur_id AS Joueur
+                                        FROM annonce
+                                        WHERE partie_tarot_id=", id()))
+        on.exit(dbDisconnect(con), add=TRUE)
+        
         DT::datatable(
-          data = dbGetQuery(con, paste0("SELECT type AS Annonce,
-                                                joueur_id AS Joueur
-                                         FROM annonce
-                                         WHERE partie_tarot_id=", id())),
+          data = data,
           extensions = 'Scroller',
           filter = 'none',
           rownames = FALSE,
@@ -63,19 +87,19 @@ scoresDisplay <- function(input, output, session, scores){
     }
     
   })
-
+  
   observe({
     # toggleState("modify", condition = (!is.null(input$scores_df_rows_selected)))
     toggleState("delete", condition = (!is.null(input$scores_df_rows_selected)))
-    })
+  })
   
   observeEvent(input$delete,{
-      
+    
     showModal(
       modalDialog(
         tagList(
           paste("Est-vous sûr de vouloir supprimer l'enregistrement", id())
-          ),
+        ),
         title="Suppression",
         footer = tagList(actionButton(session$ns("confirmDelete"), "Oui"),
                          modalButton("Non")
@@ -83,20 +107,25 @@ scoresDisplay <- function(input, output, session, scores){
       )
     )
   })
-
+  
   observeEvent(input$confirmDelete,{
+    con <- do.call(db_con, con_param)
     delete_partie(con, id())
     
     #refresh score dataframe after new score record ----
     scores(load_scores(con))
-    callModule(scoresDisplay, 'scores', scores)
+    on.exit(dbDisconnect(con), add=TRUE)
+    
+    callModule(mod_scores_display_server, "scores_display_ui_1", scores, 
+               disabled_button)
     
     # #close modal dialog
     removeModal()
   })
   
+  
   observeEvent(input$modify,{
-    
+    con <- do.call(db_con, con_param)
     pt <- dbGetQuery(con, paste0("Select * FROM partie_tarot WHERE id=", id()))
     
     couleur <- pt$couleur
@@ -105,7 +134,7 @@ scoresDisplay <- function(input, output, session, scores){
     points <- pt$points
     preneur <- pt$preneur
     appele <- pt$appele
-
+    
     annonces_df <- dbGetQuery(con, paste0("Select * FROM annonce ", 
                                           "WHERE partie_tarot_id=", id()))
     
@@ -136,34 +165,29 @@ scoresDisplay <- function(input, output, session, scores){
     
     showModal(
       modalDialog(
-        formUI(id=session$ns(paste0("modify_form", form_num)), players=players,
-               active_players=active_players,
-               couleur=couleur,
-               contrat=contrat,
-               annonces=annonces,
-               bouts=bouts,
-               points=points),
+        mod_form_ui("modify",
+               #      players = players,
+               # active_players = active_players,
+               couleur = couleur,
+               contrat = contrat,
+               annonces = annonces,
+               bouts = bouts,
+               points = points),
         title="Modifier",
         footer = modalButton("Annuler")
       )
     )
-    
-    callModule(form, paste0("modify_form", form_num), 
+    # disabled_button(FALSE)
+    callModule(mod_form_server, "modify", scores = scores, 
                preneur = preneur, appele = appele,
                annonce_players = annonce_players,
                petit_au_bout_succes = petit_au_bout_succes,
-               petit_au_bout_sens = petit_au_bout_sens)
+               petit_au_bout_sens = petit_au_bout_sens, 
+               new = FALSE, ID = id(), disabled_button = disabled_button,
+               players = players,
+               active_players = active_players)
     
-
-    cat("displ", id(), "\n")
-    callModule(validForm, paste0("modify_form", form_num), 
-               disabled_button = FALSE)
-    
-    callModule(scoresCalculation, paste0("modify_form", form_num), new=FALSE, 
-               scores = scores, ID = id())
-
-    form_num <- form_num + 1
-    
+    on.exit(dbDisconnect(con), add=TRUE)
   })
   
   output$downloadData <- downloadHandler(
@@ -176,3 +200,10 @@ scoresDisplay <- function(input, output, session, scores){
   )
   
 }
+    
+## To be copied in the UI
+# mod_scores_display_ui("scores_display_ui_1")
+    
+## To be copied in the server
+# callModule(mod_scores_display_server, "scores_display_ui_1")
+ 

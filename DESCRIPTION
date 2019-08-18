@@ -1,0 +1,23 @@
+Package: Tarot
+Title: Tarot
+Version: 0.0.0.9000
+Authors@R: person('Alexandre', 'Conanec', email = 'alexandreconanec@gmail.com', role = c('cre', 'aut'))
+Description: Compteur de point au tarot
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    shiny,
+    shinyjs,
+    tidyverse,
+    lubridate,
+    RPostgreSQL,
+    golem,
+    processx,
+    attempt,
+    DT,
+    glue,
+    htmltools
+RoxygenNote: 6.1.1
+Suggests: 
+    testthat

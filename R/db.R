@@ -1,62 +1,13 @@
-# library(tidyverse)
-# library(lubridate)
-# 
-# #test add_player
-# player_df <- data.frame(nom=c("Durand", "Conanec", "Lee", "Cozzy",
-#                               "Fayole", "Guiraud"),
-#                         prenom=c("Guillaume", "Alexandre", "Alexandre",
-#                                  "Thomas", "Etienne", "Thomas"),
-#                         pseudo=c("dudu", "AlexC", "AlexL", "ThoC", "Etienne",
-#                                  "ThoG"),
-#                         email = "blabla@agro-bordeaux.fr")
-# 
-# add_player(con, player_df)
-# player=dbGetQuery(con, "SELECT * from joueur") %>% pull(pseudo)
-# player
-# 
-# #test insert and update partie saisie
-# t <- lubridate::now("Europe/Paris")
-# partie_df <- data.frame(date = lubridate::today("Europe/Paris") %>% as.character(),
-#                         heure = paste(hour(t), minute(t),
-#                                       second(t) %>% round(0), sep = ':'),
-#                         preneur = "AlexC",
-#                         appele = "ThoC",
-#                         contrat = "Garde",
-#                         couleur = "Coeur",
-#                         bouts = 1,
-#                         points = 33,
-#                         nb_joueur=5,
-#                         stringsAsFactors = F)
-# 
-# scores_partie_df <- data.frame(joueur_id = player[1:5],
-#                            score = c(50, 25, -25, -25, -2))
-# 
-# annonce_df <- data.frame(joueur_id = "ThoC", type = "Poignee")
-# petit_au_bout_df <- data.frame(camps = "Attaque", succes = FALSE)
-# 
-# #test insert
-# insert_score(con, game = "tarot", partie_df, scores_partie_df,
-#              petit_au_bout_df, annonce_df)
-# dbGetQuery(con, "SELECT * from partie_tarot;")
-# dbGetQuery(con, "SELECT * from scores_tarot;")
-# dbGetQuery(con, "SELECT * from annonce;")
-# dbGetQuery(con, "SELECT * from petit_au_bout;")
-# 
-# #test update /!\ ne prend pas en compte quand modif de deletion
-# partie_df$bouts <- 2
-# scores_partie_df$score[4] <- 23
-# annonce_df$type = "misere"
-# petit_au_bout_df$succes = FALSE
-# 
-# update_score(con, game = "tarot", partie_df, scores_partie_df,
-#              petit_au_bout_df, annonce_df, id=5)
-# dbGetQuery(con, "SELECT * from partie_tarot;")
-# dbGetQuery(con, "SELECT * from scores_tarot;")
-# dbGetQuery(con, "SELECT * from annonce;")
-# dbGetQuery(con, "SELECT * from petit_au_bout;")
-# 
-# load_scores(con)
+#' @export
+db_con <- function(host , user, pw, drv_type = "PostgreSQL", dbname = "tarot"){
+  
+  drv <- dbDriver(drv_type)
+  dbConnect(drv, dbname = dbname, host = host, port = 5432, user = user, 
+            password = pw)
+  
+}
 
+#' @export
 insert_score <- function(con, game = "tarot", partie_df, scores_partie_df, 
                          petit_au_bout_df, annonce_df){
   if (game == "tarot"){
@@ -90,6 +41,7 @@ insert_score <- function(con, game = "tarot", partie_df, scores_partie_df,
   }
 }
 
+#' @export
 update_score <- function(con, game = "tarot", partie_df, scores_partie_df, 
                          petit_au_bout_df, annonce_df, id){
   
@@ -160,13 +112,20 @@ update_score <- function(con, game = "tarot", partie_df, scores_partie_df,
   }
 }
 
-
+#' @export
 add_player <- function(con, player_df){
   dbWriteTable(con, "joueur", 
                value = player_df, append = TRUE, row.names = FALSE)
 }
 
+#' @export
+del_player <- function(con, players){
+  lapply(players, function(player){
+    dbSendStatement(con, paste0("DELETE FROM joueur WHERE pseudo='", player,"'"))
+  })
+}
 
+#' @export
 load_scores <- function(con, game = "tarot"){
   
   if (game == "tarot"){
@@ -181,27 +140,56 @@ load_scores <- function(con, game = "tarot"){
                               FROM petit_au_bout
                               GROUP BY partie_tarot_id;")
 
-    if (NROW(petit) > 0) {
-      petit <- petit %>%
-        mutate(petit = paste(camps,
-                             c("Reussi", "Perdu")[factor(succes,
-                                                         levels = c(TRUE,
-                                                                    FALSE))])) %>% 
-        select(-camps, -succes)
-    }
-    
-    if (NROW(df)>0){
-      spread(df, key=joueur_id, value = score) %>% 
-        left_join(cbind(annonce, annonce = TRUE), 
-                  by = c("id"="partie_tarot_id")) %>% 
-        left_join(petit, by = c("id"="partie_tarot_id")) %>% 
-        select(id, date, heure, preneur, appele, contrat, couleur, bouts, 
-               points, marque, nb_joueur, petit, annonce, everything(), 
-               -partie_tarot_id)
+    if (NROW(df) > 0){
+      if (NROW(petit) > 0 & NROW(annonce) > 0) {
+        petit <- petit %>%
+          mutate(petit = paste(camps,
+                               c("Reussi", "Perdu")[factor(succes,
+                                                           levels = c(TRUE,
+                                                                      FALSE))])) %>% 
+          select(-camps, -succes)
+        
+        spread(df, key=joueur_id, value = score) %>% 
+          left_join(cbind(annonce, annonce = TRUE), 
+                    by = c("id"="partie_tarot_id")) %>% 
+          left_join(petit, by = c("id"="partie_tarot_id")) %>% 
+          select(id, date, heure, preneur, appele, contrat, couleur, bouts, 
+                 points, marque, nb_joueur, petit, annonce, everything(), 
+                 -partie_tarot_id)
+      }else if (NROW(petit) > 0 & NROW(annonce) == 0){
+        petit <- petit %>%
+          mutate(petit = paste(camps,
+                               c("Reussi", "Perdu")[factor(succes,
+                                                           levels = c(TRUE,
+                                                                      FALSE))])) %>% 
+          select(-camps, -succes)
+        
+        spread(df, key=joueur_id, value = score) %>% 
+          left_join(petit, by = c("id"="partie_tarot_id")) %>% 
+          mutate(annonce = "false") %>%  
+          select(id, date, heure, preneur, appele, contrat, couleur, bouts, 
+                 points, marque, nb_joueur, petit, annonce, everything(), 
+                 -partie_tarot_id)
+      }else if (NROW(petit) == 0 & NROW(annonce) > 0){
+        spread(df, key=joueur_id, value = score) %>%
+          left_join(cbind(annonce, annonce = TRUE), 
+                    by = c("id"="partie_tarot_id"))  %>% 
+          mutate(petit = NA) %>%  
+          select(id, date, heure, preneur, appele, contrat, couleur, bouts, 
+                 points, marque, nb_joueur, petit, annonce, everything(), 
+                 -partie_tarot_id)
+      }else if (NROW(petit) == 0 & NROW(annonce) == 0){
+        spread(df, key=joueur_id, value = score) %>%  
+          mutate(annonce = "false", petit = NA) %>%  
+          select(id, date, heure, preneur, appele, contrat, couleur, bouts, 
+                 points, marque, nb_joueur, petit, annonce, everything(), 
+                 -partie_tarot_id)
+      }
     }else NULL
-  }
+  }else NULL
 }
 
+#' @export
 delete_partie <- function(con, id){
   
   dbSendStatement(con, paste0("DELETE FROM partie_tarot WHERE id=", id))
@@ -212,3 +200,47 @@ delete_partie <- function(con, id){
   dbSendStatement(con, paste0("DELETE FROM petit_au_bout WHERE partie_tarot_id=",
                               id))
 }
+
+#' @export
+get_ordered_player_list <- function(con){
+  # con <- db_con(host = host, user = user, pw = pw)
+  players <- dbGetQuery(con, "SELECT pseudo FROM joueur") %>% pull(pseudo)
+  game_count <- dbGetQuery(con, "SELECT joueur_id 
+                                 FROM scores_tarot
+                                 GROUP BY joueur_id
+                                 ORDER BY joueur_id, COUNT(*)") %>%
+    pull(joueur_id)
+  # on.exit(dbDisconnect(con), add=TRUE)
+  
+  none_game <- players[!players %in% game_count]
+  if (NROW(none_game) > 0){
+    res <- c(game_count, none_game)  
+    factor(res, levels = res)
+  }else{
+    factor(game_count, levels = game_count)
+  }
+}
+
+# get_ordered_player_list <- function(active_players, players){
+#   if (NROW(active_players) > 0){
+#     
+#     players <- rbind(
+#       data.frame(joueur_id = active_players %>% pull(joueur_id) %>% unique(), n = 0),
+#       active_players %>% group_by(joueur_id) %>% summarise(n=n())
+#     ) %>% 
+#       group_by(joueur_id) %>% summarise(n = max(n)) %>% 
+#       bind_rows(data.frame(joueur_id = players[!players %in% (active_players %>% 
+#                                                                 pull(joueur_id) %>% 
+#                                                                 unique())],
+#                            n = 0)) %>% 
+#       arrange(desc(n)) %>%
+#       mutate(player = factor(joueur_id, levels = joueur_id)) %>% pull(player)
+#     
+#     active_players %>%
+#       filter(partie_tarot_id == max(partie_tarot_id)) %>%
+#       pull(joueur_id)
+#     
+#   }else{
+#     NULL
+#   }
+# }

@@ -203,44 +203,33 @@ delete_partie <- function(con, id){
 
 #' @export
 get_ordered_player_list <- function(con){
-  # con <- db_con(host = host, user = user, pw = pw)
-  players <- dbGetQuery(con, "SELECT pseudo FROM joueur") %>% pull(pseudo)
-  game_count <- dbGetQuery(con, "SELECT joueur_id 
+
+  players <- dbGetQuery(con, "SELECT pseudo FROM joueur") 
+  
+  if (NROW(players) > 0){
+    players <- pull(players, pseudo)
+    
+    game_count <- dbGetQuery(con, "SELECT joueur_id 
                                  FROM scores_tarot
                                  GROUP BY joueur_id
-                                 ORDER BY joueur_id, COUNT(*)") %>%
-    pull(joueur_id)
-  # on.exit(dbDisconnect(con), add=TRUE)
-  
-  none_game <- players[!players %in% game_count]
-  if (NROW(none_game) > 0){
-    res <- c(game_count, none_game)  
-    factor(res, levels = res)
-  }else{
-    factor(game_count, levels = game_count)
+                                 ORDER BY joueur_id, COUNT(*)")
+    
+    if (NROW(game_count) > 0){
+      game_count <- pull(game_count, joueur_id)
+      
+      none_game <- players[!players %in% game_count]
+      if (NROW(none_game) > 0){
+        res <- c(game_count, none_game)  
+        factor(res, levels = res)
+      }else{
+        factor(game_count, levels = game_count)
+      }
+    }else{
+      players
+    }
+    
+  }else {
+    NULL
   }
-}
 
-# get_ordered_player_list <- function(active_players, players){
-#   if (NROW(active_players) > 0){
-#     
-#     players <- rbind(
-#       data.frame(joueur_id = active_players %>% pull(joueur_id) %>% unique(), n = 0),
-#       active_players %>% group_by(joueur_id) %>% summarise(n=n())
-#     ) %>% 
-#       group_by(joueur_id) %>% summarise(n = max(n)) %>% 
-#       bind_rows(data.frame(joueur_id = players[!players %in% (active_players %>% 
-#                                                                 pull(joueur_id) %>% 
-#                                                                 unique())],
-#                            n = 0)) %>% 
-#       arrange(desc(n)) %>%
-#       mutate(player = factor(joueur_id, levels = joueur_id)) %>% pull(player)
-#     
-#     active_players %>%
-#       filter(partie_tarot_id == max(partie_tarot_id)) %>%
-#       pull(joueur_id)
-#     
-#   }else{
-#     NULL
-#   }
-# }
+}

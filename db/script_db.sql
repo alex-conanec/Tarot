@@ -13,9 +13,9 @@ ALTER SEQUENCE public.goulash_id_seq OWNED BY public.Goulash.id;
 
 CREATE TABLE public.Joueur (
                 Pseudo VARCHAR(50) NOT NULL,
-                Nom VARCHAR(50) NOT NULL,
-                Prenom VARCHAR(50) NOT NULL,
-                email VARCHAR(100) NOT NULL,
+                Nom VARCHAR(50),
+                Prenom VARCHAR(50),
+                email VARCHAR(100),
                 CONSTRAINT joueur_pk PRIMARY KEY (Pseudo)
 );
 

@@ -16,13 +16,13 @@
     <column id="COL2" populated="true" UUID="7a9f253c-1728-439b-8284-ecb0cff59e7f" autoIncrement="false" autoIncrementSequenceName="Joueur_Pseudo_seq" defaultValue="" name="Pseudo" nullable="0" physicalName="Pseudo" precision="50" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL3" populated="true" UUID="89a3132f-02b4-4de4-b508-4d3f6a0985fe" autoIncrement="false" autoIncrementSequenceName="Joueur_Nom_seq" defaultValue="" name="Nom" nullable="0" physicalName="Nom" precision="50" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL3" populated="true" UUID="89a3132f-02b4-4de4-b508-4d3f6a0985fe" autoIncrement="false" autoIncrementSequenceName="Joueur_Nom_seq" defaultValue="" name="Nom" nullable="1" physicalName="Nom" precision="50" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL4" populated="true" UUID="8be6d5c8-0f46-4442-b666-c00e0e7bc7c9" autoIncrement="false" autoIncrementSequenceName="Joueur_Prenom_seq" defaultValue="" name="Prenom" nullable="0" physicalName="Prenom" precision="50" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL4" populated="true" UUID="8be6d5c8-0f46-4442-b666-c00e0e7bc7c9" autoIncrement="false" autoIncrementSequenceName="Joueur_Prenom_seq" defaultValue="" name="Prenom" nullable="1" physicalName="Prenom" precision="50" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL5" populated="true" UUID="cb4a9244-ff61-4d37-9b82-0b607d0cd19e" autoIncrement="false" autoIncrementSequenceName="Joueur_email_seq" defaultValue="" name="email" nullable="0" physicalName="email" precision="100" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL5" populated="true" UUID="cb4a9244-ff61-4d37-9b82-0b607d0cd19e" autoIncrement="false" autoIncrementSequenceName="Joueur_email_seq" defaultValue="" name="email" nullable="1" physicalName="email" precision="100" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
     </folder>
